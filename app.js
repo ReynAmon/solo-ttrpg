@@ -1,9 +1,37 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const SUPABASE_URL = 'https://your-project-ref.supabase.co'; // <- from dashboard
-const SUPABASE_ANON_KEY = 'your-anon-key';                  // <- from dashboard
+// --- AUTH HANDLING ---
+const emailInput = document.getElementById('email');
+const loginBtn = document.getElementById('login');
+const logoutBtn = document.getElementById('logout');
+const authStatus = document.getElementById('auth-status');
 
-const supabase = createClient(https://siezhoprxbmpejslvvwo.supabase.co, sb_secret_WqNKwCk-SrpOPaqGFVZsvA_qFEhYjA_);
+// Send magic link
+if (loginBtn) loginBtn.onclick = async () => {
+  const email = emailInput.value;
+  const { error } = await supabase.auth.signInWithOtp({ email });
+  authStatus.textContent = error ? error.message : "Magic link sent!";
+};
+
+// Logout
+if (logoutBtn) logoutBtn.onclick = async () => {
+  await supabase.auth.signOut();
+  authStatus.textContent = "Logged out.";
+};
+
+// Listen for auth changes (user logs in via magic link)
+supabase.auth.onAuthStateChange((event, session) => {
+  if (session?.user) {
+    authStatus.textContent = "Logged in as: " + session.user.email;
+  } else {
+    authStatus.textContent = "Not logged in.";
+  }
+});
+
+const SUPABASE_URL = 'https://siezhoprxbmpejslvvwo.supabase.co'; // <- from dashboard
+const SUPABASE_ANON_KEY = 'sb_secret_WqNKwCk-SrpOPaqGFVZsvA_qFEhYjA_'; // <- from dashboard
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- simple UI hooks (assumes elements exist in index.html) ---
 const saveBtn = document.getElementById('save');
@@ -13,9 +41,20 @@ const output = document.getElementById('output');
 // Example: save current state object
 async function saveCampaign(name, stateObj) {
   // if you want owner tracking, sign-in flow is needed (magic link)
+async function saveCampaign(name, stateObj) {
+  const user = (await supabase.auth.getUser()).data.user;
+  if (!user) {
+    output.textContent = "You must log in first.";
+    return;
+  }
+
   const { data, error } = await supabase
     .from('campaigns')
-    .insert([{ name, state: stateObj }])
+    .insert([{
+      owner: user.id,
+      name,
+      state: stateObj
+    }])
     .select()
     .single();
 
