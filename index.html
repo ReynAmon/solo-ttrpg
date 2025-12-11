@@ -1,17 +1,52 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Solo TTRPG</title>
   <link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
 </head>
 <body>
-  <h1>Solo TTRPG</h1>
+  <main style="max-width:700px;margin:20px auto;padding:10px;">
+    <h1>Solo TTRPG</h1>
 
-  <div id="output"></div>
+    <!-- AUTH -->
+    <section aria-labelledby="auth-heading">
+      <h2 id="auth-heading" style="font-size:1rem">Account</h2>
+      <input id="email" type="email" placeholder="you@example.com" />
+      <button id="login">Send Magic Link</button>
+      <button id="logout">Logout</button>
+      <div id="auth-status" style="margin-top:8px;font-size:0.95rem;color:#333;">
+        Not logged in.
+      </div>
+    </section>
 
-  <button id="roll">Roll</button>
+    <hr/>
+
+    <!-- SAVE / LOAD -->
+    <section aria-labelledby="save-heading">
+      <h2 id="save-heading" style="font-size:1rem">Cloud Saves</h2>
+      <input id="campaign-name" placeholder="Campaign name" style="width:100%;margin-bottom:8px"/>
+      <textarea id="state" rows="6" placeholder='{"hp":10,"notes":["start"]}' style="width:100%;"></textarea>
+      <div style="margin-top:8px;">
+        <button id="save">Save</button>
+        <button id="load">Load last</button>
+      </div>
+    </section>
+
+    <hr/>
+
+    <!-- DICE (optional small utility) -->
+    <section aria-labelledby="dice-heading">
+      <h2 id="dice-heading" style="font-size:1rem">Dice</h2>
+      <div id="output" style="margin:8px 0;font-weight:600">Ready.</div>
+      <button id="roll">Roll d6</button>
+    </section>
+
+    <footer style="margin-top:18px;font-size:0.85rem;color:#666;">
+      Deployed site — refresh after you push to GitHub and Vercel auto-redeploys.
+    </footer>
+  </main>
 
   <script type="module" src="app.js"></script>
 </body>
