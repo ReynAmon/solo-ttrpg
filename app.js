@@ -3,7 +3,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = 'https://your-project-ref.supabase.co'; // <- from dashboard
 const SUPABASE_ANON_KEY = 'your-anon-key';                  // <- from dashboard
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(https://siezhoprxbmpejslvvwo.supabase.co, sb_secret_WqNKwCk-SrpOPaqGFVZsvA_qFEhYjA_);
 
 // --- simple UI hooks (assumes elements exist in index.html) ---
 const saveBtn = document.getElementById('save');
